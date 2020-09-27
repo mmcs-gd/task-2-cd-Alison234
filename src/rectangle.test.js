@@ -1,4 +1,5 @@
 import Rectangle from './rectangle'
+import triangle from "./triangle";
 
 describe('Rectangle getters', () => {
     it('should calculate borders correctly', () => {
@@ -117,4 +118,23 @@ describe('Rectangle.intersects()', () => {
         const otherRect = new Rectangle(10, 10, 1, 1)
         expect(rect.intersects(otherRect)).toBeFalsy()
     })
+
+    it('should returns true if triangle is intersected',() => {
+        const  tr = new triangle(2,0,3)
+        expect(rect.intersects(tr)).toBeTruthy()
+
+    })
+
+    it('should returns true if triangle is intersected',() => {
+        const  tr = new triangle(3,2,1)
+        expect(rect.intersects(tr)).toBeTruthy()
+
+    })
+
+    it('should returns false if triangle is intersected',() => {
+        const  tr = new triangle(4,3,2)
+        expect(rect.intersects(tr)).toBeFalsy()
+
+    })
+
 })

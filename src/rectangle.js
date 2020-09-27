@@ -1,14 +1,24 @@
-export default class Rectangle {
-    constructor(x, y, w, h,color = "none",vx = 0,vy = 0) {
-        this.x = x
-        this.y = y
+import Figure from "./Figure";
+import triangle from "./triangle";
+
+export default class Rectangle extends Figure {
+    constructor(x, y, w, h,color = "none",vx = 0,vy = 0,collisionCount= 0) {
+        super(x,y,vx,vy);
         this.w = w
         this.h = h
         this.c = color
-        this.vx = vx
-        this.vy = vy
     }
 
+
+    draw(context){
+        context.beginPath();
+        context.rect(this.x, this.y, this.w, this.h);
+        context.fillStyle = this.color;
+        context.shadowColor = this.color;
+        context.shadowBlur = 10;
+        context.fill();
+        context.closePath();
+    }
 
     get color(){
         return this.c
@@ -16,7 +26,6 @@ export default class Rectangle {
     set color(newColor){
         this.c = newColor
     }
-
 
     get left() {
         return this.x
@@ -41,10 +50,18 @@ export default class Rectangle {
             point.y < this.y + this.h)
     }
 
-     intersects(rect) {
-        return (this.x < rect.x + rect.w)
-            && (rect.x < this.x + this.w)
-            && (this.y < rect.y + rect.h)
-            && (rect.y < this.y + this.w)
+    intersects(fig) {
+        if(fig instanceof Rectangle) {
+            return  (this.x < fig.x + fig.w)
+                && (fig.x < this.x + this.w)
+                && (this.y < fig.y + fig.h)
+                && (fig.y < this.y + this.w)
+        }
+         if(fig instanceof triangle){
+             return false
+         }
+
     }
+
+
 }
