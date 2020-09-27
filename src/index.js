@@ -2,12 +2,13 @@ import rectangle from "./rectangle";
 import triangle from "./triangle";
 import hexagon from "./hexagon";
 import Figure from "./Figure";
+import Circle from "./Circle";
 
 const canvas = document.getElementById("cnvs");
 
 const gameState = {};
 
-const color = ["red","blue","green","yellow","gray",'#39a7db'];
+const color = ["#cfa37a","#b4d266","#9c71ec","#c45ddd","#39a7db",'#39a7db'];
 
 function queueUpdates(numTicks) {
     for (let i = 0; i < numTicks; i++) {
@@ -72,6 +73,7 @@ function stopGame(handle) {
 
 
 function setup() {
+
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
     gameState.lastTick = performance.now()
@@ -80,6 +82,7 @@ function setup() {
 
 
     gameState.figures = new Array()
+
     for (let i = 0;i<10;i++){
         let randomX = getRandomIntInclusive(100,canvas.width-200)
         let randomY = getRandomIntInclusive(100,canvas.height -200)
@@ -101,6 +104,26 @@ function setup() {
         gameState.figures.push(new rectangle(randomX,randomY,randomWidth,randomHeight,color[randomColor],vx,vy))
     }
 
+
+    for (let i = 0;i<10;i++){
+        let randomX = getRandomIntInclusive(100,canvas.width-200)
+        let randomY = getRandomIntInclusive(100,canvas.height -200)
+        let randomRadius = getRandomIntInclusive(10,20)
+        let vx = getRandomIntInclusive(-5,5)
+        let vy = getRandomIntInclusive(-5,5)
+        let randomColor = getRandomIntInclusive(0,color.length-2)
+        gameState.figures.push(new Circle(randomX,randomY,randomRadius,color[randomColor],vx,vy))
+    }
+
+    for (let i = 0;i<10;i++){
+        let randomX = getRandomIntInclusive(100,canvas.width-200)
+        let randomY = getRandomIntInclusive(100,canvas.height -200)
+        let len = getRandomIntInclusive(10,30)
+        let vx = getRandomIntInclusive(-5,5)
+        let vy = getRandomIntInclusive(-5,5)
+        let randomColor = getRandomIntInclusive(0,color.length-2)
+        gameState.figures.push(new hexagon(randomX,randomY,len,color[randomColor],vx,vy))
+    }
 }
 
 function getRandomIntInclusive(min, max) {

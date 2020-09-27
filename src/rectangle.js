@@ -58,7 +58,10 @@ export default class Rectangle extends Figure {
                 && (fig.y < this.y + this.w)
         }
          if(fig instanceof triangle){
-             return false
+             return (this.x <= fig.x + fig.l/2)
+                 && (fig.x <= this.x + this.w)
+                 && (this.y <= fig.y + fig.l/2)
+                 && (fig.y <= this.y + this.w)
          }
 
     }

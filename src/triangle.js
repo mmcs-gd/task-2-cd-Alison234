@@ -5,13 +5,6 @@ export default class triangle extends Figure   {
 
     constructor(x,y,l,c = "none",vx = 0,vy = 0,collisionCount= 0) {
         super(x,y,vx,vy);
-        /*this.x = x
-        this.y = y
-        this.c = c
-        this.l = l
-        this.vx = vx
-        this.vy = vy
-         */
         this.c = c
         this.l = l
     }
@@ -35,10 +28,10 @@ export default class triangle extends Figure   {
 
     intersects(fig) {
         if(fig instanceof Rectangle) {
-            return  (this.x < fig.x + fig.w)
-                && (fig.x < this.x + this.l)
-                && (this.y < fig.y + fig.h)
-                && (fig.y < this.y + this.l)
+            return  (this.x <= fig.x + fig.w)
+                && (fig.x <= this.x + this.l/2)
+                && (this.y <= fig.y + fig.h)
+                && (fig.y <= this.y + this.l/2)
         }
         if(fig instanceof triangle){
             return false
