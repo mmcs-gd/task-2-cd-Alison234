@@ -1,5 +1,8 @@
 import Figure from "./Figure";
 import Rectangle from "./rectangle";
+import hexagon from "./hexagon";
+import circle from "./Circle";
+
 
 export default class triangle extends Figure   {
 
@@ -7,6 +10,7 @@ export default class triangle extends Figure   {
         super(x,y,vx,vy);
         this.c = c
         this.l = l
+        this.collisionCount = collisionCount
     }
 
     draw(context){
@@ -34,7 +38,28 @@ export default class triangle extends Figure   {
                 && (fig.y <= this.y + this.l/2)
         }
         if(fig instanceof triangle){
-            return false
+
+        }
+
+        if(fig instanceof circle){
+            let testX = fig.x;
+            let testY = fig.y;
+            if (fig.x < this.x) {testX = this.x}
+            else if (fig.x >this.x+this.l/2) {testX = this.x+this.l/2}
+            if (fig.y < this.y)         {testY = this.y}
+            else if (fig.y > this.y+this.l/2) {testY = this.y+this.l/2}
+            let distX = fig.x-testX;
+            let distY = fig.y-testY;
+            let distance = Math.sqrt( (distX*distX) + (distY*distY) );
+
+            if (distance <= fig.r) {
+                return true;
+            }
+            return false;
+        }
+
+        if(fig instanceof hexagon){
+
         }
 
     }

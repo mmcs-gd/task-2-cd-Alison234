@@ -1,11 +1,14 @@
 import Figure from "./Figure";
 import triangle from "./triangle";
+import Rectangle from "./rectangle";
+import circle from "./Circle";
 
 export default class hexagon extends Figure {
     constructor(x, y, l, c = "none", vx = 0, vy = 0, collisionCount = 0) {
         super(x, y, vx, vy);
         this.c = c
         this.l = l
+        this.collisionCount = collisionCount
     }
 
     draw(context) {
@@ -25,7 +28,22 @@ export default class hexagon extends Figure {
         context.fillStyle = this.c;
         context.fill();
         context.closePath()
+    }
+    intersects(fig){
 
+        if(fig instanceof Rectangle){
+            return fig.intersects(this)
+        }
 
+        if(fig instanceof triangle){
+
+        }
+
+        if(fig instanceof circle){
+
+        }
+        if(fig instanceof hexagon){
+
+        }
     }
 }

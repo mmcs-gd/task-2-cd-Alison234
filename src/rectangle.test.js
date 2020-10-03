@@ -1,5 +1,7 @@
 import Rectangle from './rectangle'
 import triangle from "./triangle";
+import Circle from "./Circle";
+import hexagon from "./hexagon";
 
 describe('Rectangle getters', () => {
     it('should calculate borders correctly', () => {
@@ -131,10 +133,38 @@ describe('Rectangle.intersects()', () => {
 
     })
 
+    it('should returns true if triangle is intersected',() => {
+        const another = new Rectangle(2,2,4,4)
+        const  tr = new triangle(4,1,2)
+        expect(another.intersects(tr)).toBeTruthy()
+
+    })
+
     it('should returns false if triangle is intersected',() => {
         const  tr = new triangle(4,3,2)
         expect(rect.intersects(tr)).toBeFalsy()
+    })
 
+    it('should returns true if circle is intersected',() => {
+        const  c = new Circle(2,3,2)
+        expect(rect.intersects(c)).toBeTruthy()
+
+    })
+
+    it('should returns false if circle is intersected',() => {
+        const  c = new Circle(10,10,1)
+        expect(rect.intersects(c)).toBeFalsy()
+    })
+
+    it('should returns true if hexagon is intersected',() => {
+        const  h = new hexagon(2,3,2)
+        expect(rect.intersects(h)).toBeTruthy()
+
+    })
+
+    it('should returns false if hexagon is intersected',() => {
+        const  h = new hexagon(10,10,1)
+        expect(rect.intersects(h)).toBeFalsy()
     })
 
 })

@@ -1,5 +1,7 @@
 import Figure from "./Figure";
 import triangle from "./triangle";
+import Circle from "./Circle";
+import hexagon from "./hexagon";
 
 export default class Rectangle extends Figure {
     constructor(x, y, w, h,color = "none",vx = 0,vy = 0,collisionCount= 0) {
@@ -7,6 +9,7 @@ export default class Rectangle extends Figure {
         this.w = w
         this.h = h
         this.c = color
+        this.collisionCount = collisionCount;
     }
 
 
@@ -50,6 +53,10 @@ export default class Rectangle extends Figure {
             point.y < this.y + this.h)
     }
 
+    containsFig(fig){
+
+    }
+
     intersects(fig) {
         if(fig instanceof Rectangle) {
             return  (this.x < fig.x + fig.w)
@@ -57,11 +64,43 @@ export default class Rectangle extends Figure {
                 && (this.y < fig.y + fig.h)
                 && (fig.y < this.y + this.w)
         }
-         if(fig instanceof triangle){
+         if(fig instanceof triangle) {
              return (this.x <= fig.x + fig.l/2)
                  && (fig.x <= this.x + this.w)
                  && (this.y <= fig.y + fig.l/2)
                  && (fig.y <= this.y + this.w)
+         }
+         if (fig instanceof Circle){
+             let testX = fig.x;
+             let testY = fig.y;
+             if (fig.x < this.x) {testX = this.x}
+             else if (fig.x >this.x+this.w) {testX = this.x+this.w}
+             if (fig.y < this.y)         {testY = this.y}
+             else if (fig.y > this.y+this.h) {testY = this.y+this.h}
+             let distX = fig.x-testX;
+             let distY = fig.y-testY;
+             let distance = Math.sqrt( (distX*distX) + (distY*distY) );
+
+             if (distance <= fig.r) {
+                 return true;
+             }
+             return false;
+         }
+         if(fig instanceof hexagon){
+             let isCollision = false
+             let tr = [
+                 new triangle(fig.x,fig.y,fig.l),
+                 new triangle(fig.x + fig.l * Math.sqrt(3)/2,fig.y - fig.l / 2,fig.l),
+                 new triangle(fig.x + fig.l * Math.sqrt(3) / 2,fig.y + fig.l / 2,fig.l),
+                 new triangle(fig.x,fig.y + fig.l,fig.l),
+                 new triangle(fig.x - fig.l * Math.sqrt(3) / 2,fig.y + fig.l / 2,fig.l),
+                 new triangle(fig.x-fig.l * Math.sqrt(3) / 2,fig.y - fig.l / 2,fig.l),
+             ]
+             for(let i =0;i<tr.length; i++){
+                  isCollision = tr[i].intersects(this)
+                 if(isCollision) {return true}
+             }
+             return false
          }
 
     }

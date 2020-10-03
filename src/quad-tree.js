@@ -18,7 +18,15 @@ export default class QuadTree {
     }
 
     insert(point) {
-        return true
+        if(!this._boundary.contains(point)) return
+        if(this._points.length < this._capacity){
+            this._points.push(point)
+            return
+        }
+        if(!this._hasChildren){
+            this._subdivide()
+        }
+        this._children.forEach(quad =>quad.insert(point))
     }
 
     get length() {
@@ -30,10 +38,29 @@ export default class QuadTree {
     }
 
     queryRange(rect, found = []) {
-        return found
+        const {boundary,points,children} = this
+        if(!rect.intersects(boundary)){
+            return found
+        }
+        found = found.concat(
+            points.filter(p=>rect.contains(p))
+        )
+        if(this._hasChildren){
+            children.forEach(ch=>ch.queryRange(rect,found))
+        }
+    return found
     }
 
     _subdivide() {
+        const {x,y,w,h} = this._boundary
+        const quadCoords=[
+            new Point(x,y),
+            new Point(x+w/2,y),
+            new Point(x,y+h/2),
+            new Point(x+w/2,y+h/2),
+        ]
+        this._children = quadCoords.map(({x,y}) => new Rectangle(x,y,w/2,h/2)).map(rect => new QuadTree(rect,this._capacity))
+        this._hasChildren = true
     }
 
     clear() {

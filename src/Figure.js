@@ -1,9 +1,10 @@
 export default class Figure{
-    constructor(x,y,vx,vy){
+    constructor(x,y,vx,vy,cc){
         this.x = x
         this.y = y
         this.vx = vx
         this.vy = vy
+        this.collisionCount = cc
     }
 
     draw (context){
@@ -15,7 +16,5 @@ export default class Figure{
         this.x += this.vx
     }
 
-    intersects(fig){
-        //implement on sub-class
-    }
+
 }
