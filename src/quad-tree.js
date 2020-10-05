@@ -1,4 +1,5 @@
 import Rectangle from './rectangle'
+import Point from "./Point";
 
 export default class QuadTree {
     constructor(boundary, capacity = 4) {
@@ -38,18 +39,25 @@ export default class QuadTree {
     }
 
     queryRange(rect, found = []) {
-        const {boundary,points,children} = this
-        if(!rect.intersects(boundary)){
-            return found
+        const { _boundary: bound, _points: pts, _children: children } = this;
+        if (!rect.intersects(bound)) {
+            return found;
         }
-        found = found.concat(
-            points.filter(p=>rect.contains(p))
-        )
-        if(this._hasChildren){
-            children.forEach(ch=>ch.queryRange(rect,found))
+
+        for (const p of pts) {
+            if (rect.contains(p)) {
+                // console.log("contains point", p);
+                found.push(p);
+            }
         }
-    return found
+
+        if (this._hasChildren) {
+            children.forEach(child => child.queryRange(rect, found));
+        }
+
+        return found
     }
+
 
     _subdivide() {
         const {x,y,w,h} = this._boundary
@@ -59,7 +67,8 @@ export default class QuadTree {
             new Point(x,y+h/2),
             new Point(x+w/2,y+h/2),
         ]
-        this._children = quadCoords.map(({x,y}) => new Rectangle(x,y,w/2,h/2)).map(rect => new QuadTree(rect,this._capacity))
+        this._children = quadCoords.map(({x,y}) => new Rectangle(x,y,w/2,h/2))
+            .map(rect => new QuadTree(rect,this._capacity))
         this._hasChildren = true
     }
 
