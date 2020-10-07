@@ -3,6 +3,7 @@ import triangle from "./triangle";
 import Circle from "./Circle";
 import hexagon from "./hexagon";
 import Point from "./Point";
+import Straight from "./Straight";
 
 export default class Rectangle extends Figure {
     constructor(x, y, w, h,color = "none",vx = 0,vy = 0,collisionCount= 0) {
@@ -13,11 +14,12 @@ export default class Rectangle extends Figure {
 
 
     draw(context){
+        if(this.collisionCount>=3){
+            return
+        }
         context.beginPath();
         context.rect(this.x, this.y, this.w, this.h);
         context.fillStyle = this.color;
-        context.shadowColor = this.color;
-        context.shadowBlur = 10;
         context.fill();
         context.closePath();
     }
@@ -51,8 +53,20 @@ export default class Rectangle extends Figure {
         return new Point(this.x + this.w/2,this.y+this.h/2,this)
     }
 
+    getStraights(fig){
+        let st = []
+        st.push(new  Straight(fig.x,fig.y,fig.x+fig.w,fig.y))
+        st.push(new  Straight(fig.x+fig.w,fig.y,fig.x+fig.w,fig.y+fig.h))
+        st.push(new  Straight(fig.x+fig.w,fig.y+fig.h,fig.x,fig.y+fig.h))
+        st.push(new  Straight(fig.x,fig.y+fig.h,fig.x -fig.h))
+        return st
+    }
+
 
     intersects(fig) {
+        if(this.collisionCount>=3 ||fig.collisionCount>=3){
+            return false
+        }
         if(fig instanceof Rectangle) {
             return  (this.x < fig.x + fig.w)
                 && (fig.x < this.x + this.w)
@@ -60,10 +74,10 @@ export default class Rectangle extends Figure {
                 && (fig.y < this.y + this.w)
         }
          if(fig instanceof triangle) {
-             return (this.x <= fig.x + fig.l)
+             return (this.x <= fig.x + fig.l/2)
                  && (fig.x <= this.x + this.w)
                  && (this.y <= fig.y + fig.l)
-                 && (fig.y <= this.y + this.w)
+                 && (fig.y  <= this.y + this.w)
          }
          if (fig instanceof Circle){
              let testX = fig.x;
@@ -82,18 +96,12 @@ export default class Rectangle extends Figure {
              return false;
          }
          if(fig instanceof hexagon){
-             let isCollision = false
-             let tr = [
-                 new triangle(fig.x,fig.y,fig.l),
-                 new triangle(fig.x + fig.l * Math.sqrt(3)/2,fig.y - fig.l / 2,fig.l),
-                 new triangle(fig.x + fig.l * Math.sqrt(3) / 2,fig.y + fig.l / 2,fig.l),
-                 new triangle(fig.x,fig.y + fig.l,fig.l),
-                 new triangle(fig.x - fig.l * Math.sqrt(3) / 2,fig.y + fig.l / 2,fig.l),
-                 new triangle(fig.x-fig.l * Math.sqrt(3) / 2,fig.y - fig.l / 2,fig.l),
-             ]
-             for(let i =0;i<tr.length; i++){
-                  isCollision = tr[i].intersects(this)
-                 if(isCollision) {return true}
+             let tr = fig.getStraights(fig)
+             let tr1 = this.getStraights(this)
+             for(let i =0;i<tr.length; i++)
+                 for(let j =0;j<tr1.length;j++)
+                 if(tr[i].intersects(tr1[j])){
+                     return true
              }
              return false
          }

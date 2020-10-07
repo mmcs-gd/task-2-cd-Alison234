@@ -7,6 +7,7 @@ import Straight from "./Straight";
 import QuadTree from "./quad-tree";
 import Rectangle from "./rectangle";
 import Point from "./Point";
+import circle from "./Circle";
 
 const canvas = document.getElementById("cnvs");
 
@@ -31,21 +32,13 @@ function draw(tFrame) {
 }
 
 function simpleCollision(){
-    let isDone = false;
     for(let i=0;i<gameState.figures.length;i++) {
         for (let j = 0; j < gameState.figures.length; j++) {
-            if (gameState.figures[i].intersects(gameState.figures[j]) && !isDone && gameState.figures[i] != gameState.figures[j]) {
+            if (gameState.figures[i].intersects(gameState.figures[j]) &&  gameState.figures[i] != gameState.figures[j]) {
                 gameState.figures[i].collisionCount++
                 gameState.figures[j].collisionCount++
                 gameState.figures[i].color = color[color.indexOf(gameState.figures[i].color) + 1];
                 gameState.figures[j].color = color[color.indexOf(gameState.figures[j].color) + 1];
-                /*if (gameState.figures[i].collisionCount >=3)
-                    gameState.figures.splice(gameState.figures.indexOf(gameState.figures[i]), 1)
-
-                if (gameState.figures[j].collisionCount >= 3)
-                    gameState.figures.splice(gameState.figures.indexOf(gameState.figures[j]), 1)
-                 */
-                isDone = true;
             }
         }
     }
@@ -65,27 +58,21 @@ function  collisionsTree(){
     for(let fig of gameState.figures)
         points.push(fig.center())
     points.forEach(p=>tree.insert(p))
-    let candidates =[]
     for (let i = 0;i< points.length;i++) {
-        const len = 100
-        const bounds = new Rectangle(points[i].x-50, points[i].y-50, len, len)
+        let candidates =[]
+        const len = 50
+        const bounds = new Rectangle(points[i].x-25, points[i].y-25, len, len)
         tree.queryRange(bounds, candidates)
         for (let other of candidates) {
             if (points[i].figure != other.figure && points[i].figure.intersects(other.figure)) {
-                points[i].figure.collisionCount++
-                other.figure.collisionCount++
                 points[i].figure.highlight()
                 other.figure.highlight()
+                points[i].figure.collisionCount++
+                other.figure.collisionCount++
                 other.figure.vy = -1 * other.figure.vy
                 other.figure.vx = -1 * other.figure.vx
                 points[i].figure.vy = -1 * points[i].figure.vy
                 points[i].figure.vx = -1 * points[i].figure.vx
-                /*
-                if (points[i].figure.collisionCount >=3)
-                    gameState.figures.splice(gameState.figures.indexOf(points[i].figure), 1)
-                if (other.figure.collisionCount >= 3)
-                    gameState.figures.splice(gameState.figures.indexOf(other.figure), 1)
-                */
             }
         }
     }
@@ -96,8 +83,8 @@ function collisionsWithBorders(){
         if(x.intersects(new rectangle(0,0,canvas.width,0)))
             x.vy = -1 *x.vy
         if(x.intersects(new rectangle(0,canvas.height,canvas.width,0)))
-            x.vy = -1 *x.vy
-            //x.y = 20
+            //x.vy = -1 *x.vy
+            x.y = 20
         if(x.intersects(new rectangle(0,0,0,canvas.height)))
             x.vx = -1 *x.vx
         if(x.intersects(new rectangle(canvas.width,0,0,canvas.height)))
@@ -137,45 +124,43 @@ function setup() {
     gameState.area = new rectangle(0,0,canvas.width,canvas.height)
 
 
-    for (let i = 0;i<5;i++){
+    for (let i = 0;i<200;i++){
         let randomX = getRandomIntInclusive(20,canvas.width-25)
         let randomY = getRandomIntInclusive(20,canvas.height -25)
-        let vx = getRandomIntInclusive(-5,5)
-        let vy = getRandomIntInclusive(1,5)
+        let vx = getRandomIntInclusive(-2,2)
+        let vy = getRandomIntInclusive(1,2)
         let randomColor = getRandomIntInclusive(0,color.length-2)
-        gameState.figures.push(new Circle(randomX,randomY,50,color[randomColor],vx,vy,0))
+        gameState.figures.push(new Circle(randomX,randomY,5,color[randomColor],vx,vy,0))
     }
-    /*
-    for (let i = 0;i<2;i++){
-        let randomX = getRandomIntInclusive(20,canvas.width-25)
-        let randomY = getRandomIntInclusive(20,canvas.height -25)
-        let vx = getRandomIntInclusive(-5,5)
-        let vy = getRandomIntInclusive(1,5)
-        let randomColor = getRandomIntInclusive(0,color.length-2)
-        gameState.figures.push(new hexagon(randomX,randomY,50,color[0],vx,vy))
-    }
-    */
 
-    for (let i = 0;i<5;i++){
+    for (let i = 0;i<200;i++){
         let randomX = getRandomIntInclusive(20,canvas.width-25)
         let randomY = getRandomIntInclusive(20,canvas.height -25)
-        let vx = getRandomIntInclusive(-5,5)
-        let vy = getRandomIntInclusive(1,5)
+        let vx = getRandomIntInclusive(-2,2)
+        let vy = getRandomIntInclusive(1,2)
         let randomColor = getRandomIntInclusive(0,color.length-2)
-        gameState.figures.push(new triangle(randomX,randomY,50,color[randomColor],vx,vy))
-    }/*
-    for (let i = 0;i<2;i++){
-        let randomX = getRandomIntInclusive(20,canvas.width-25)
-        let randomY = getRandomIntInclusive(20,canvas.height -25)
-        let vx = getRandomIntInclusive(-5,5)
-        let vy = getRandomIntInclusive(1,5)
-        let randomColor = getRandomIntInclusive(0,color.length-2)
-        gameState.figures.push(new rectangle(randomX,randomY,30,50,color[randomColor],vx,vy,0))
+        gameState.figures.push(new triangle(randomX,randomY,10,color[randomColor],vx,vy,0))
     }
-    */
+
+    for (let i = 0;i<200;i++){
+        let randomX = getRandomIntInclusive(20,canvas.width-25)
+        let randomY = getRandomIntInclusive(20,canvas.height -25)
+        let vx = getRandomIntInclusive(-2,2)
+        let vy = getRandomIntInclusive(1,2)
+        let randomColor = getRandomIntInclusive(0,color.length-2)
+        gameState.figures.push(new rectangle(randomX,randomY,5,10,color[randomColor],vx,vy,0))
+    }
+
+    for (let i = 0;i<200;i++){
+        let randomX = getRandomIntInclusive(20,canvas.width-25)
+        let randomY = getRandomIntInclusive(20,canvas.height -25)
+        let vx = getRandomIntInclusive(-2,2)
+        let vy = getRandomIntInclusive(1,2)
+        let randomColor = getRandomIntInclusive(0,color.length-2)
+        gameState.figures.push(new hexagon(randomX,randomY,5,color[0],vx,vy,0))
+    }
+
 }
-
-
 function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -184,47 +169,59 @@ function getRandomIntInclusive(min, max) {
 
 setup();
 run();
+
 /*
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 const context = canvas.getContext('2d');
-gameState.figures.map( x => {
+let fig = []
+fig.push(new circle(50,50,20))
+fig.push(new triangle(250,250,20))
+fig.push(new circle(550,550,20))
+fig.push(new circle(570,520,20))
+fig.push(new triangle(450,450,20))
+fig.push(new hexagon(550,590,20))
+fig.map( function (x) {
     x.draw(context)
 })
-/*
 const area = new rectangle(0,0,canvas.width,canvas.height)
 const tree = new QuadTree(area)
 let points = []
-for(let fig of gameState.figures){
-    points.push(fig.center())
+for(let f of fig){
+    points.push(f.center())
 }
 points.forEach(p=>tree.insert(p))
-console.log(points[0])
-let candidates =[]
-for (let i = 0;i< points.length;i++){
-    console.log(points[i])
-    const len = 100
-    const bounds = new Rectangle(points[i].x,points[i].y,len,len)
-    tree.queryRange(bounds,candidates)
 
+let candidates =[]
+const len = 100
+const bounds = new Rectangle(points[3].x-25,points[3].y-25,len,len)
+tree.queryRange(bounds,candidates)
+console.log(points[3])
+console.log(candidates)
+/*
+for (let i = 0;i< points.length;i++){
+    let candidates =[]
+    const len = 100
+    const bounds = new Rectangle(points[i].x-25,points[i].y-25,len,len)
+    tree.queryRange(bounds,candidates)
+    console.log(points[i])
+    console.log(candidates)
     for(const other of candidates){
         if(points[i].figure != other.figure && points[i].figure.intersects(other.figure)){
-            console.log('gtht')
+            //console.log('gtht')
         }
     }
 }
 */
 /*
-let fig = new Circle(10,50,20)
-let t = new triangle(20,80,24)
-let st = new Straight(t.center().x,t.center().y,10,150)
-let tt = t.getStraights(t)
-const context = canvas.getContext('2d');
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
-st.draw(context)
-*/
+let fig = new rectangle(100,400,100,100)
+let t = new circle(120,400,24)
 
+fig.draw(context)
+t.draw(context)
+
+console.log(fig.intersects(t))
+*/
 
 
 

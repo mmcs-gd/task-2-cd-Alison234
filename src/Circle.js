@@ -13,6 +13,9 @@ export default class circle extends Figure{
     }
 
     draw(context) {
+        if(this.collisionCount>=3){
+            return
+        }
         context.beginPath();
         context.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
         context.fillStyle = this.c;
@@ -27,6 +30,9 @@ export default class circle extends Figure{
 
 
     intersects(fig) {
+        if(this.collisionCount>=3 ||fig.collisionCount>=3){
+            return false
+        }
         if (fig instanceof Rectangle){
             return fig.intersects(this)
         }

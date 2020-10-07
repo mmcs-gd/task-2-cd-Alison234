@@ -14,6 +14,9 @@ export default class triangle extends Figure   {
     }
 
     draw(context) {
+        if(this.collisionCount>=3){
+            return
+        }
         context.beginPath();
         context.moveTo(this.x,this.y)
         context.lineTo(this.x+this.l,this.y +this.l)
@@ -49,6 +52,9 @@ export default class triangle extends Figure   {
     }
 
     intersects(fig) {
+        if(this.collisionCount>=3 ||fig.collisionCount>=3){
+            return false
+        }
         if(fig instanceof Rectangle) {
             return  (this.x <= fig.x + fig.w)
                 && (fig.x <= this.x + this.l/2)
@@ -66,6 +72,7 @@ export default class triangle extends Figure   {
         }
 
         if(fig instanceof circle){
+            /*
             let testX = fig.x;
             let testY = fig.y;
             if (fig.x < this.x) {testX = this.x}
@@ -84,6 +91,13 @@ export default class triangle extends Figure   {
         if(fig instanceof hexagon){
             fig.intersects(this)
         }
-
+        */
+         let st = this.getStraights(this)
+         for(let i = 0;i<st.length;i++){
+            if(fig.intersects(st[i]))
+                return  true
+         }
+        }
+        return false
     }
 }

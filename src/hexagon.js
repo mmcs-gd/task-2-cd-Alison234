@@ -13,7 +13,6 @@ export default class hexagon extends Figure {
     }
 
 
-
     center(){
         return new Point(this.x,this.y,this)
     }
@@ -31,6 +30,9 @@ export default class hexagon extends Figure {
     }
 
     draw(context) {
+        if(this.collisionCount>=3){
+            return
+        }
         context.beginPath();
         let coordArray = [
             [this.x,this.y - this.l],
@@ -49,7 +51,9 @@ export default class hexagon extends Figure {
         context.closePath()
     }
     intersects(fig){
-
+        if(this.collisionCount>=3 ||fig.collisionCount>=3){
+            return false
+        }
         if(fig instanceof Rectangle){
             return fig.intersects(this)
         }
