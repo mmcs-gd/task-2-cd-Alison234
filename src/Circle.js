@@ -65,7 +65,7 @@ export default class circle extends Figure{
                 return true
             }
             return false
-    }
+        }
         if (fig instanceof triangle){
             return fig.intersects(this)
         }
@@ -78,6 +78,5 @@ export default class circle extends Figure{
         let d2 = Math.sqrt(Math.pow(px - x2,2) + Math.pow(py - y2,2));
         let lineLen = Math.sqrt(Math.pow(x1 - x2,2) + Math.pow(y1 - y2,2));
         return  d1+d2 >= lineLen && d1+d2 <= lineLen
+    }
 }
-}
-

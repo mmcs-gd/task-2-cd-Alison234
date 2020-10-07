@@ -7,7 +7,7 @@ import Circle from "./Circle";
 import Point from "./Point";
 
 export default class hexagon extends Figure {
-    constructor(x, y, l, c = "red", vx = 0, vy = 0, collisionCount = 0) {
+    constructor(x, y, l, c = 'black', vx = 0, vy = 0, collisionCount = 0) {
         super(x, y, vx, vy,collisionCount,c);
         this.l = l
     }

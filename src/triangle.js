@@ -8,7 +8,7 @@ import Point from "./Point";
 
 export default class triangle extends Figure   {
 
-    constructor(x,y,l,c = "black",vx = 0,vy = 0,collisionCount= 0) {
+    constructor(x,y,l,c = 'black',vx = 0,vy = 0,collisionCount= 0) {
         super(x,y,vx,vy,collisionCount,c);
         this.l = l
     }
@@ -71,27 +71,11 @@ export default class triangle extends Figure   {
             return false
         }
 
-        if(fig instanceof circle){
-            /*
-            let testX = fig.x;
-            let testY = fig.y;
-            if (fig.x < this.x) {testX = this.x}
-            else if (fig.x > this.x) {testX = this.x}
-            if (fig.y < this.y)         {testY = this.y}
-            else if (fig.y > this.y+this.l*2) {testY = this.y+this.l*2}
-            let distX = fig.x-testX;
-            let distY = fig.y-testY;
-            let distance = Math.sqrt( (distX*distX) + (distY*distY) );
-            if (distance <= fig.r) {
-                return true;
-            }
-            return false;
-        }
-
         if(fig instanceof hexagon){
             fig.intersects(this)
         }
-        */
+
+        if(fig instanceof circle){
          let st = this.getStraights(this)
          for(let i = 0;i<st.length;i++){
             if(fig.intersects(st[i]))

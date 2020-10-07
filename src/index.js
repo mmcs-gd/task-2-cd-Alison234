@@ -111,6 +111,15 @@ function stopGame(handle) {
     window.cancelAnimationFrame(handle);
 }
 
+function RandomParam(){
+    let param = []
+    param.push(getRandomIntInclusive(20,canvas.width-25))
+    param.push(getRandomIntInclusive(20,canvas.height -25))
+    param.push(getRandomIntInclusive(-2,2))
+    param.push(getRandomIntInclusive(1,2))
+    param.push(getRandomIntInclusive(0,color.length-2))
+    return param
+}
 
 function setup() {
 
@@ -123,43 +132,18 @@ function setup() {
 
     gameState.area = new rectangle(0,0,canvas.width,canvas.height)
 
-
-    for (let i = 0;i<200;i++){
-        let randomX = getRandomIntInclusive(20,canvas.width-25)
-        let randomY = getRandomIntInclusive(20,canvas.height -25)
-        let vx = getRandomIntInclusive(-2,2)
-        let vy = getRandomIntInclusive(1,2)
-        let randomColor = getRandomIntInclusive(0,color.length-2)
-        gameState.figures.push(new Circle(randomX,randomY,5,color[randomColor],vx,vy,0))
+    gameState.figuresCount = 400
+    for (let i = 0;i < gameState.figuresCount/4;i++){
+        let param = RandomParam()
+        gameState.figures.push(
+            new Circle(param[0],param[1],5,color[param[4]],param[2],param[3],0))
+         param = RandomParam()
+        gameState.figures.push (new triangle(param[0],param[1],5,color[param[4]],param[2],param[3],0))
+         param = RandomParam()
+        gameState.figures.push(new hexagon(param[0],param[1],5,color[param[4]],param[2],param[3],0))
+        param = RandomParam()
+        gameState.figures.push(new rectangle(param[0],param[1],5,10,color[param[4]],param[2],param[3],0))
     }
-
-    for (let i = 0;i<200;i++){
-        let randomX = getRandomIntInclusive(20,canvas.width-25)
-        let randomY = getRandomIntInclusive(20,canvas.height -25)
-        let vx = getRandomIntInclusive(-2,2)
-        let vy = getRandomIntInclusive(1,2)
-        let randomColor = getRandomIntInclusive(0,color.length-2)
-        gameState.figures.push(new triangle(randomX,randomY,10,color[randomColor],vx,vy,0))
-    }
-
-    for (let i = 0;i<200;i++){
-        let randomX = getRandomIntInclusive(20,canvas.width-25)
-        let randomY = getRandomIntInclusive(20,canvas.height -25)
-        let vx = getRandomIntInclusive(-2,2)
-        let vy = getRandomIntInclusive(1,2)
-        let randomColor = getRandomIntInclusive(0,color.length-2)
-        gameState.figures.push(new rectangle(randomX,randomY,5,10,color[randomColor],vx,vy,0))
-    }
-
-    for (let i = 0;i<200;i++){
-        let randomX = getRandomIntInclusive(20,canvas.width-25)
-        let randomY = getRandomIntInclusive(20,canvas.height -25)
-        let vx = getRandomIntInclusive(-2,2)
-        let vy = getRandomIntInclusive(1,2)
-        let randomColor = getRandomIntInclusive(0,color.length-2)
-        gameState.figures.push(new hexagon(randomX,randomY,5,color[0],vx,vy,0))
-    }
-
 }
 function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
@@ -169,62 +153,6 @@ function getRandomIntInclusive(min, max) {
 
 setup();
 run();
-
-/*
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
-const context = canvas.getContext('2d');
-let fig = []
-fig.push(new circle(50,50,20))
-fig.push(new triangle(250,250,20))
-fig.push(new circle(550,550,20))
-fig.push(new circle(570,520,20))
-fig.push(new triangle(450,450,20))
-fig.push(new hexagon(550,590,20))
-fig.map( function (x) {
-    x.draw(context)
-})
-const area = new rectangle(0,0,canvas.width,canvas.height)
-const tree = new QuadTree(area)
-let points = []
-for(let f of fig){
-    points.push(f.center())
-}
-points.forEach(p=>tree.insert(p))
-
-let candidates =[]
-const len = 100
-const bounds = new Rectangle(points[3].x-25,points[3].y-25,len,len)
-tree.queryRange(bounds,candidates)
-console.log(points[3])
-console.log(candidates)
-/*
-for (let i = 0;i< points.length;i++){
-    let candidates =[]
-    const len = 100
-    const bounds = new Rectangle(points[i].x-25,points[i].y-25,len,len)
-    tree.queryRange(bounds,candidates)
-    console.log(points[i])
-    console.log(candidates)
-    for(const other of candidates){
-        if(points[i].figure != other.figure && points[i].figure.intersects(other.figure)){
-            //console.log('gtht')
-        }
-    }
-}
-*/
-/*
-let fig = new rectangle(100,400,100,100)
-let t = new circle(120,400,24)
-
-fig.draw(context)
-t.draw(context)
-
-console.log(fig.intersects(t))
-*/
-
-
-
 
 
 

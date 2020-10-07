@@ -73,37 +73,37 @@ export default class Rectangle extends Figure {
                 && (this.y < fig.y + fig.h)
                 && (fig.y < this.y + this.w)
         }
-         if(fig instanceof triangle) {
-             return (this.x <= fig.x + fig.l/2)
-                 && (fig.x <= this.x + this.w)
-                 && (this.y <= fig.y + fig.l)
-                 && (fig.y  <= this.y + this.w)
-         }
-         if (fig instanceof Circle){
-             let testX = fig.x;
-             let testY = fig.y;
-             if (fig.x < this.x) {testX = this.x}
-             else if (fig.x >this.x+this.w) {testX = this.x+this.w}
-             if (fig.y < this.y)         {testY = this.y}
-             else if (fig.y > this.y+this.h) {testY = this.y+this.h}
-             let distX = fig.x-testX;
-             let distY = fig.y-testY;
-             let distance = Math.sqrt( (distX*distX) + (distY*distY) );
+        if(fig instanceof triangle) {
+            return (this.x <= fig.x + fig.l/2)
+                && (fig.x <= this.x + this.w)
+                && (this.y <= fig.y + fig.l)
+                && (fig.y  <= this.y + this.w)
+        }
+        if (fig instanceof Circle){
+            let testX = fig.x;
+            let testY = fig.y;
+            if (fig.x < this.x) {testX = this.x}
+            else if (fig.x >this.x+this.w) {testX = this.x+this.w}
+            if (fig.y < this.y)         {testY = this.y}
+            else if (fig.y > this.y+this.h) {testY = this.y+this.h}
+            let distX = fig.x-testX;
+            let distY = fig.y-testY;
+            let distance = Math.sqrt( (distX*distX) + (distY*distY) );
 
-             if (distance <= fig.r) {
-                 return true;
-             }
-             return false;
-         }
-         if(fig instanceof hexagon){
-             let tr = fig.getStraights(fig)
-             let tr1 = this.getStraights(this)
-             for(let i =0;i<tr.length; i++)
-                 for(let j =0;j<tr1.length;j++)
-                 if(tr[i].intersects(tr1[j])){
-                     return true
-             }
-             return false
-         }
+            if (distance <= fig.r) {
+                return true;
+            }
+            return false;
+        }
+        if(fig instanceof hexagon){
+            let tr = fig.getStraights(fig)
+            let tr1 = this.getStraights(this)
+            for(let i =0;i<tr.length; i++)
+                for(let j =0;j<tr1.length;j++)
+                    if(tr[i].intersects(tr1[j])){
+                        return true
+                    }
+            return false
+        }
     }
 }
